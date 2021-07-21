@@ -1,13 +1,10 @@
 package Memoization;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.*;
 
 public class BestSum {
-    static ArrayList<Integer> bestSum(int target, int[] arr, Dictionary<Integer,ArrayList<Integer>> dict) {
-        if(dict.get(target) != null){
+    static ArrayList<Integer> bestSum(int target, int[] arr, Map<Integer,ArrayList<Integer>> dict) {
+        if(dict.containsKey(target)){
             return dict.get(target);
         }
         if (target == 0) {
@@ -21,23 +18,21 @@ public class BestSum {
             int remaining = target - i;
             ArrayList<Integer> res = bestSum(remaining, arr,dict);
             if (res != null) {
-                res.add(i);
-                if (shortest == null || res.size() < shortest.size()) {
-
-                    shortest = res;
-                    System.out.println(shortest);
+                ArrayList<Integer> combi = new ArrayList<>();
+                combi.addAll(res);
+                combi.add(i);
+                if (shortest == null || combi.size() < shortest.size()) {
+                    shortest = combi;
                 }
             }
         }
-        System.out.println("target-------------- " + target + " " + shortest);
         dict.put(target,shortest);
-        System.out.println(dict);
         return shortest;
     }
 
     public static void main(String[] args) {
-        Dictionary<Integer, ArrayList<Integer>> map = new Hashtable<>();
-        System.out.println(bestSum(4, new int[]{1,2},map));
+        Map<Integer, ArrayList<Integer>> map = new Hashtable<>();
+        System.out.println(bestSum(100, new int[]{1,2,5,25},map));
         //System.out.println(bestSum(100, new int[]{1, 5, 25},map));
     }
 }
